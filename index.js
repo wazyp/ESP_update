@@ -1,15 +1,34 @@
 const express = require('express');
-const { networkInterfaces } = require('os');
 const path = require('path');
+const multer = require('multer');
+const { networkInterfaces } = require('os');
  
 const app = express();
 const nets = networkInterfaces();
  
 // Server port
 const PORT = 3000;
+
  
-app.get('/', (request, response) => response.send('Hello from www.mischianti.org!'));
+ const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, 'firmware'));
+    },
+    filename: function (req, file, cb) {
+        cb(null, 'httpUpdateNew.bin');
+    }
+});
+const upload = multer({ storage: storage });
+ app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// app.get('/', (request, response) => response.send('Hello from www.mischianti.org!'));
  
+ app.post('/upload', upload.single('firmware'), (req, res) => {
+    res.send('File uploaded successfully!');
+});
+
 let downloadCounter = 1;
 app.get('/firmware/httpUpdateNew.bin', (request, response) => {
     response.download(path.join(__dirname, 'firmware/httpUpdateNew.bin'), 'httpUpdateNew.bin', (err)=>{

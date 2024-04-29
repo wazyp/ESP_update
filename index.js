@@ -98,7 +98,10 @@ const getRandomDate = () => {
     const twentyDaysAgo = new Date();
     twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 20);
     const randomDate = new Date(twentyDaysAgo.getTime() + Math.random() * (new Date() - twentyDaysAgo));
-    return randomDate.toISOString().split('T')[0];
+    const hours = Math.floor(Math.random() * 24);
+    const minutes = Math.floor(Math.random() * 60);
+    randomDate.setHours(hours, minutes);
+    return randomDate.toISOString();
 };
 
 // Define a function to generate a random container ID between 1 and 4
@@ -121,11 +124,11 @@ app.get('/data', (req, res) => {
     const fullnessPercentage = getRandomFullnessPercentage();
 
     res.json({
-        weight: weight,
-        temperature: temperature,
         dateAdded: dateAdded,
         containerId: containerId,
         cardId: cardId,
+        weight: weight,
+        temperature: temperature,
         fullnessPercentage: fullnessPercentage
     });
 });

@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const multer = require('multer');
-const admin = require('firebase-admin');
+// const admin = require('firebase-admin');
 const bodyParser = require('body-parser');
 const { networkInterfaces } = require('os');
  
@@ -93,14 +93,40 @@ const getRandomWeight = () => Math.floor(Math.random() * (2001 - 100) + 100);
 // Define a function to generate a random temperature between 10 and 40 degrees Celsius
 const getRandomTemperature = () => Math.floor(Math.random() * (41 - 10) + 10);
 
+// Define a function to generate a random date within the last 20 days
+const getRandomDate = () => {
+    const twentyDaysAgo = new Date();
+    twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 20);
+    const randomDate = new Date(twentyDaysAgo.getTime() + Math.random() * (new Date() - twentyDaysAgo));
+    return randomDate.toISOString().split('T')[0];
+};
+
+// Define a function to generate a random container ID between 1 and 4
+const getRandomContainerId = () => Math.floor(Math.random() * 4) + 1;
+
+// Define a function to generate a random RFID card ID
+const getRandomCardId = () => Math.random().toString(36).substring(2, 10).toUpperCase();
+
+// Define a function to generate a random fullness percentage between 10 and 80
+const getRandomFullnessPercentage = () => Math.floor(Math.random() * (81 - 10) + 10);
+
+
 // Endpoint to get random weight and temperature
-app.get('/getData', (req, res) => {
+app.get('/data', (req, res) => {
     const weight = getRandomWeight();
     const temperature = getRandomTemperature();
+    const dateAdded = getRandomDate();
+    const containerId = getRandomContainerId();
+    const cardId = getRandomCardId();
+    const fullnessPercentage = getRandomFullnessPercentage();
 
     res.json({
         weight: weight,
-        temperature: temperature
+        temperature: temperature,
+        dateAdded: dateAdded,
+        containerId: containerId,
+        cardId: cardId,
+        fullnessPercentage: fullnessPercentage
     });
 });
 

@@ -115,7 +115,7 @@ const getRandomFullnessPercentage = () => Math.floor(Math.random() * (81 - 10) +
 
 
 // Endpoint to get random weight and temperature
-app.get('/data', (req, res) => {
+app.get('/getData', (req, res) => {
     const weight = getRandomWeight();
     const temperature = getRandomTemperature();
     const dateAdded = getRandomDate();
